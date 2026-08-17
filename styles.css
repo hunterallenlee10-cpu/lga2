@@ -35,8 +35,10 @@ body{
   line-height:1.6;
   font-size:16.5px;
   overflow-x:hidden;
+  overflow-x:clip;
   -webkit-font-smoothing:antialiased;
 }
+html{overflow-x:clip;}
 h1,h2,h3,h4{
   font-family:'Poppins', sans-serif;
   color:var(--ink);
@@ -148,6 +150,21 @@ header{
 .mobile-menu.open{display:flex;}
 .mobile-menu a{padding:13px 14px; border-radius:8px; font-size:15.5px; font-weight:600; color:var(--ink);}
 .mobile-menu a:hover{background:var(--tint); color:var(--blue);}
+/* Compact header on small screens so logo + Donate + burger fit without overflow */
+@media(max-width:640px){
+  .nav-shell{padding:0 16px;}
+  .mobile-menu{margin:0 -16px; padding:10px 12px 14px;}
+  .nav-bar{gap:10px;}
+  .logo{font-size:14.5px; gap:7px;}
+  .logo-dot::before{font-size:17px;}
+  .nav-cta{gap:8px;}
+  .nav-cta .btn{padding:9px 13px !important; font-size:13px !important;}
+  .burger{padding:5px;}
+}
+@media(max-width:350px){
+  .logo{font-size:12.5px;}
+  .nav-cta .btn{padding:7px 10px !important; font-size:12px !important;}
+}
 
 /* ---------- Hero (full-bleed) ---------- */
 .hero{max-width:none; margin:0; padding:0;}
