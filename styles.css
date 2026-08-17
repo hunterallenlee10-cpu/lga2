@@ -1,7 +1,7 @@
 /* ============================================================
    Legal Guardian Angels — shared design system
    Visual language inspired by joinonelove.org:
-   cobalt blue + warm yellow + deep navy, bold Poppins display
+   cobalt blue + light blue + deep navy, bold Poppins display
    type, full-bleed alternating bands, sticky white header.
    ============================================================ */
 
@@ -10,7 +10,7 @@
   --blue:#2247E2;        /* primary cobalt */
   --blue-dark:#1837B8;   /* hover / pressed */
   --navy:#0C1543;        /* footer, dark bands, overlays */
-  --yellow:#FFC72C;      /* accent */
+  --yellow:#8EC5FF;      /* accent (light blue) */
   --tint:#EEF2FC;        /* light blue band / panels */
   --ink:#111528;         /* body text */
   --ink-soft:#4B5165;    /* muted text */
@@ -21,7 +21,7 @@
   --cream:#FFFFFF;
   --cream-2:#F7F9FE;
   --dark:#0C1543;
-  --gold:#FFC72C;
+  --gold:#8EC5FF;
   --gold-dark:#2247E2;
   --radius:12px;
 }
