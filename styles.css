@@ -341,7 +341,8 @@ header{
 .contact-item strong{color:#fff; font-weight:600; font-size:15px;}
 @media(max-width:860px){ .cta-band{grid-template-columns:1fr; padding-top:72px; padding-bottom:72px;} }
 
-.contact-item strong a:hover{color:var(--yellow);}
+.contact-item strong a{border-bottom:1px solid rgba(255,255,255,.35);}
+.contact-item strong a:hover{color:var(--yellow); border-bottom-color:var(--yellow);}
 
 /* ---------- Calendar ---------- */
 .table-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:12px;}
