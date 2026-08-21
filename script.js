@@ -1,5 +1,5 @@
 const GA_MEASUREMENT_ID = 'G-RQLTBCHD7K';
-const EMAILJS_CONFIG = window.LGA_EMAILJS_CONFIG || {};
+const EMAILJS_CONFIG = window.TFF_EMAILJS_CONFIG || {};
 const EMAILJS_PUBLIC_KEY = (window.EMAILJS_PUBLIC_KEY || EMAILJS_CONFIG.publicKey || 'KuO37tT32zhjcAtqT').trim();
 const EMAILJS_SERVICE_ID = (window.EMAILJS_SERVICE_ID || EMAILJS_CONFIG.serviceId || 'service_hq6wnc5').trim();
 const EMAILJS_TEMPLATE_ID = (window.EMAILJS_TEMPLATE_ID || EMAILJS_CONFIG.templateId || 'template_c280h0u').trim();
@@ -120,13 +120,6 @@ function setFormStatus(message, type = 'success') {
   status.className = `form-status ${type}`;
 }
 
-function showSubmittedState() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('submitted') === '1') {
-    setFormStatus('Thanks — your message was received and the auto-reply is on the way.', 'success');
-  }
-}
-
 function isEmailJsConfigured() {
   return Boolean(
     EMAILJS_PUBLIC_KEY &&
@@ -161,55 +154,60 @@ async function handleContactForm(event) {
 
   try {
     if (isLocalEnvironment()) {
-      setFormStatus('Thanks — your message is ready to submit. Local preview will show the confirmation page after the form is accepted by the hosting service.', 'success');
+      setFormStatus('Thanks — local preview skips sending and shows the confirmation page.', 'success');
       form.reset();
       window.setTimeout(() => {
-        window.location.href = '/thank-you.html';
+        window.location.href = 'thank-you.html';
       }, 250);
       return;
     }
 
-    if (!isEmailJsConfigured()) {
-      throw new Error('EmailJS values are not configured yet. Add your public key, service ID, and template ID.');
-    }
-
-    if (!window.emailjs) {
-      throw new Error('EmailJS SDK did not load.');
-    }
-
+    // Capture the submission with the host's form handler (e.g. Netlify Forms)
+    // while the fields still hold their values. Hosts without a form handler
+    // reject the POST; that is fine as long as the EmailJS send below works.
+    let captured = false;
     try {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        name,
-        email,
-        message,
-        from_name: name,
-        from_email: email,
-        reply_to: email,
-        user_name: name,
-        user_email: email,
-        user_message: message,
-        subject: 'New contact form submission'
-      }, EMAILJS_PUBLIC_KEY);
-
-      setFormStatus('Thanks, we got your message and your auto-reply is on the way.', 'success');
-    } catch (emailError) {
-      console.error('EmailJS send failed:', emailError);
-      setFormStatus('Your message was captured, but the auto-reply could not be sent. Please contact us directly.', 'error');
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      });
+      captured = response.ok;
+    } catch (captureError) {
+      console.error('Form capture failed:', captureError);
     }
 
-    const successUrl = new URL(window.location.href);
-    successUrl.searchParams.set('submitted', '1');
-    successUrl.hash = 'contact';
-    window.history.replaceState({}, '', successUrl.toString());
+    let emailed = false;
+    if (isEmailJsConfigured() && window.emailjs) {
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          name,
+          email,
+          message,
+          from_name: name,
+          from_email: email,
+          reply_to: email,
+          user_name: name,
+          user_email: email,
+          user_message: message,
+          subject: 'New contact form submission'
+        }, EMAILJS_PUBLIC_KEY);
+        emailed = true;
+      } catch (emailError) {
+        console.error('EmailJS send failed:', emailError);
+      }
+    }
+
+    if (!captured && !emailed) {
+      throw new Error('Your message could not be delivered.');
+    }
 
     form.reset();
-    window.setTimeout(() => {
-      form.submit();
-    }, 250);
+    window.location.href = 'thank-you.html';
   } catch (error) {
     console.error('Form submission failed:', error);
     const detail = error?.text || error?.message || error?.statusText || String(error) || 'Please try again later.';
-    setFormStatus(`Sorry, something went wrong: ${detail}`, 'error');
+    setFormStatus(`Sorry, something went wrong: ${detail} You can also reach us directly at legalguardianangelsumd@gmail.com.`, 'error');
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = 'Send message';
@@ -229,6 +227,5 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDropdowns();
   setupAnchorTracking();
   setupContactForm();
-  showSubmittedState();
   trackEvent('page_view');
 });

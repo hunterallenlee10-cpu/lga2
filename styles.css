@@ -1,5 +1,5 @@
 /* ============================================================
-   Legal Guardian Angels — shared design system
+   Terps Fostering Futures — shared design system
    Visual language inspired by joinonelove.org:
    cobalt blue + light blue + deep navy, bold Poppins display
    type, full-bleed alternating bands, sticky white header.
@@ -340,6 +340,23 @@ header{
 .contact-item span{display:block; font-size:12px; color:var(--yellow); font-weight:800; text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px;}
 .contact-item strong{color:#fff; font-weight:600; font-size:15px;}
 @media(max-width:860px){ .cta-band{grid-template-columns:1fr; padding-top:72px; padding-bottom:72px;} }
+
+.contact-item strong a:hover{color:var(--yellow);}
+
+/* ---------- Calendar ---------- */
+.table-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:12px;}
+.calendar-table{width:100%; min-width:560px; border-collapse:collapse; background:#fff;}
+.calendar-table th{
+  background:var(--navy); color:#fff; text-align:left;
+  font-family:'Poppins', sans-serif; font-weight:700; font-size:13px;
+  letter-spacing:.08em; text-transform:uppercase; padding:16px 22px;
+}
+.calendar-table td{padding:18px 22px; border-top:1px solid var(--line); vertical-align:top; font-size:15.5px;}
+.calendar-table tbody tr:nth-child(even) td{background:var(--cream-2);}
+.calendar-table .cal-date{white-space:nowrap; font-family:'Poppins', sans-serif; font-weight:700; color:var(--blue);}
+.calendar-table .cal-time{white-space:nowrap; color:var(--ink-soft); font-weight:600;}
+.cal-note{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
+.cal-note strong{color:var(--blue);}
 
 /* ---------- Contact form ---------- */
 .form-card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:38px; max-width:640px; margin-top:34px;}
