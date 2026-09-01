@@ -207,7 +207,7 @@ async function handleContactForm(event) {
   } catch (error) {
     console.error('Form submission failed:', error);
     const detail = error?.text || error?.message || error?.statusText || String(error) || 'Please try again later.';
-    setFormStatus(`Sorry, something went wrong: ${detail} You can also reach us directly at legalguardianangelsumd@gmail.com.`, 'error');
+    setFormStatus(`Sorry, something went wrong: ${detail} You can also reach us directly at terpsfosteringfutures@gmail.com.`, 'error');
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = 'Send message';
