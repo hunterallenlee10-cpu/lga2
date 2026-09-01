@@ -91,7 +91,7 @@ header{
 .logo{
   display:flex; align-items:center; gap:9px;
   font-family:'Poppins', sans-serif; font-weight:800; font-size:18px;
-  color:var(--navy); flex-shrink:0;
+  color:var(--navy); flex-shrink:0; white-space:nowrap;
 }
 .logo-dot{width:auto; height:auto; border-radius:0; background:none; line-height:1;}
 .logo-dot::before{content:"\2665\FE0E"; font-size:21px; color:var(--blue);}
@@ -132,12 +132,33 @@ header{
 .dropdown.open .dropdown-menu{display:flex;}
 .dropdown.open .dropdown-toggle{color:var(--blue); font-weight:700;}
 .nav-cta{display:flex; align-items:center; gap:14px; flex-shrink:0;}
-.nav-cta .btn{box-shadow:none;}
-.burger{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:8px;}
+.nav-cta .btn{box-shadow:none; padding:11px 24px; font-size:14px;}
+/* Padding gives a ~44px touch target; the negative margin keeps the
+   layout footprint compact so the header still fits narrow phones. */
+.burger{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:13px 10px; margin:-6px;}
 .burger span{width:24px; height:2.5px; background:var(--navy); display:block; border-radius:2px;}
-@media(max-width:900px){
+/* Collapse to the burger while the full link row would overflow (it needs ~1080px). */
+@media(max-width:1100px){
   .nav-links{display:none;}
   .burger{display:flex;}
+}
+/* Scale the header down so logo + Donate + burger fit a phone screen. */
+@media(max-width:640px){
+  .nav-bar{gap:10px; padding:14px 0;}
+  .logo{font-size:15px; gap:7px;}
+  .logo-dot::before{font-size:18px;}
+  .nav-cta{gap:8px;}
+  .nav-cta .btn{padding:10px 14px; font-size:13px;}
+  .nav-cta .donate-now{display:none;}
+}
+@media(max-width:400px){
+  .logo{font-size:13.5px; gap:6px;}
+  .logo-dot::before{font-size:16px;}
+  .nav-cta .btn{padding:10px 12px; font-size:12.5px;}
+}
+@media(max-width:350px){
+  .nav-shell{padding:0 16px;}
+  .logo{font-size:12.5px;}
 }
 .mobile-menu{
   display:none; flex-direction:column; gap:2px; background:#fff;
@@ -148,6 +169,7 @@ header{
 .mobile-menu.open{display:flex;}
 .mobile-menu a{padding:13px 14px; border-radius:8px; font-size:15.5px; font-weight:600; color:var(--ink);}
 .mobile-menu a:hover{background:var(--tint); color:var(--blue);}
+@media(max-width:350px){ .mobile-menu{margin:0 -16px;} }
 
 /* ---------- Hero (full-bleed) ---------- */
 .hero{max-width:none; margin:0; padding:0;}
@@ -187,8 +209,13 @@ header{
 .hero-stats strong{display:block; font-family:'Poppins', sans-serif; font-weight:800; font-size:clamp(1.8rem, 3vw, 2.6rem); line-height:1.1;}
 .hero-stats span{font-size:14px; color:rgba(255,255,255,.78);}
 @media(max-width:640px){
-  .hero-inner:has(> img){min-height:560px;}
-  .hero-content{padding:56px 24px 60px;}
+  .hero-inner:has(> img){min-height:500px;}
+  .hero-content{padding:48px 24px 52px;}
+  .hero-content h1{font-size:clamp(1.75rem, 7.6vw, 2.4rem); margin-bottom:16px;}
+  .hero-content p{font-size:1rem; margin-bottom:24px;}
+  .hero-btns{margin-bottom:28px; gap:10px;}
+  .hero-stats{gap:20px 36px;}
+  .hero-stats strong{font-size:1.55rem;}
 }
 
 /* ---------- About (index) ---------- */
@@ -406,3 +433,55 @@ footer{border-top:6px solid var(--blue);}
 .ty-page h1{font-size:2rem; margin-bottom:12px; color:var(--navy);}
 .ty-page p{font-size:16px; line-height:1.6; color:var(--ink-soft); margin-bottom:24px;}
 .ty-page .btn{background:var(--blue); color:#fff;}
+
+/* ============================================================
+   Mobile refinements
+   ============================================================ */
+
+/* Inline button groups that wrap cleanly on narrow screens */
+.btn-row{display:flex; flex-wrap:wrap; gap:12px; align-items:center;}
+
+/* Grid/flex children default to min-width:auto, which lets long content
+   force a column wider than the viewport on small screens. */
+.about-grid > *, .content-grid > *, .numbers-grid > *, .cta-band > *,
+.card-grid > *, .steps > *, .impact-cards > *, .footer-grid > *,
+.stat-row > *, .hero-stats > *{min-width:0;}
+
+/* The contact email has no break opportunities; let it wrap anywhere. */
+.contact-item strong{overflow-wrap:anywhere;}
+
+@media(max-width:640px){
+  section{padding:56px 0;}
+  h2{font-size:clamp(1.5rem, 6.5vw, 1.9rem);}
+  .section-head{margin-bottom:36px; gap:14px;}
+  .btn{padding:14px 24px;}
+
+  .about-panel{padding:28px 24px;}
+  .p-card, .card, .step-card{padding:26px 22px;}
+  .stat-card{padding:18px;}
+  .stat-card strong{font-size:1.7rem;}
+  .form-card{padding:28px 20px;}
+
+  .quote-banner{min-height:440px;}
+  .quote-inner{padding:48px 20px;}
+  .quote-inner::before{font-size:64px; margin-bottom:22px;}
+
+  .impact-band{padding-top:60px; padding-bottom:60px;}
+  .cta-band{padding-top:60px; padding-bottom:60px; gap:36px;}
+  .contact-item{padding:16px 18px;}
+  .i-card .amt{font-size:clamp(2rem, 8vw, 3.3rem);}
+  .num-callout{gap:20px 28px;}
+  .num-callout div strong{font-size:1.8rem;}
+  .gallery-grid img{height:240px;}
+
+  .calendar-table{min-width:480px;}
+  .calendar-table th{padding:12px 14px;}
+  .calendar-table td{padding:14px;}
+
+  .ty-page .card{padding:32px 24px;}
+}
+
+@media(max-width:560px){
+  .footer-grid{gap:28px 24px;}
+  .footer-grid > div:first-child{grid-column:1 / -1;}
+}
